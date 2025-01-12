@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useFetchData = (url) => {
+const useFetchData = (url, shouldReload) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -24,8 +24,12 @@ const useFetchData = (url) => {
       }
     };
 
+    if (shouldReload) {
+      fetchData();
+    }
+
     fetchData();
-  }, [url]);
+  }, [url, shouldReload]);
 
   return { data, loading, error, status };
 };

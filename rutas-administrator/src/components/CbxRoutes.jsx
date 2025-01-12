@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import useFetchData from './../hooks/useFetchData';
 
 
-const CbxRoutes = ({ onRouteSelect, selectedRouteId }) => {
-  const { data: routes, error, isLoading } = useFetchData('http://localhost:9090/rutas/api/v1/rutas');
+const CbxRoutes = ({ onRouteSelect, selectedRouteId, reload }) => {
+  const [shouldReload, setShouldReload] = useState(false);
+  const { data: routes, error, isLoading } = useFetchData('http://localhost:9090/rutas/api/v1/rutas', shouldReload);
   const [wasRouteSelected, setWasRouteSelected] = useState(false);
   const [selectedRouteDetails, setSelectedRouteDetails] = useState(null);
 
@@ -28,6 +29,17 @@ const CbxRoutes = ({ onRouteSelect, selectedRouteId }) => {
     }
   }, [selectedRouteId]);
 
+  useEffect(() => {
+    if (reload !== '') {    
+      setShouldReload(true);
+    }
+  }, [reload]);
+
+  useEffect(() => {
+    if (shouldReload) {
+      setShouldReload(false); 
+    }
+  }, [shouldReload]);
 
   return (
     <div>
